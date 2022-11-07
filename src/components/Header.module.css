@@ -1,0 +1,49 @@
+.container {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.menu {
+  list-style-type: none;
+}
+
+.account {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2vh auto;
+}
+
+.account__menu {
+  padding-left: 0;
+}
+
+.account__menu li {
+  display: inline;
+  border-left: 1px solid #c0c0c0;
+  padding: 0px 10px 0px 10px;
+  margin: 5px 0px 5px 0px;
+}
+
+.account__menu li:first-child {
+  border-left: none;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #c0c0c0;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.main__menu {
+  display: flex;
+  border-bottom: 1px solid #c0c0c0;
+  justify-content: space-around;
+  margin: 0;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+}
+
+.main__menu li {
+  font-size: 18px;
+}
