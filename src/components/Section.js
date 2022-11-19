@@ -4,7 +4,7 @@ function Section() {
     <div className={styles.section__container}>
       <fieldset>
         <legend className={styles.title}>메뉴</legend>
-        <div className={styles.button__container}>
+        <div className={styles.sction__button__container}>
           <span className={styles.more}>More</span>
         </div>
         <ul className={styles.content}>

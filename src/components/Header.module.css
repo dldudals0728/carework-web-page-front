@@ -1,4 +1,4 @@
-.container {
+.header__container {
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -10,7 +10,7 @@
 .account {
   display: flex;
   justify-content: flex-end;
-  margin: 2vh auto;
+  /* margin: 1vh auto; */
 }
 
 .account__menu {
@@ -46,4 +46,9 @@
 
 .main__menu li {
   font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }

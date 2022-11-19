@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Righteous&display=swap");
+
+* {
+  font-family: "Do Hyeon", cursive;
+}
+
+.header__wrap {
+  margin: 0 auto;
+}
+
+.section__wrap {
+  display: flex;
+  justify-content: space-around;
+}
+
+.home__body {
+  display: flex;
+  justify-content: center;
+  margin: 1vh;
+  border: 3px solid black;
+  border-radius: 12px;
+}
+
+.poster {
+  width: 40%;
+}

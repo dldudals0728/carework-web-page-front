@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# React - Spring project: 요양보호사 통합 홈페이지
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### React에서 spring으로 post mapping
 
-## Available Scripts
+결과적으로, axios나 fetch를 통한 api를 이용하는 것이 아니라, form tag를 이용하여 값을 보낼 수 있다!!
 
-In the project directory, you can run:
+```JS
+<form action="http://IPaddress/account/login" method="post">
+    <label>
+        <div>아이디</div>
+        <input
+        type="text"
+        placeholder="ID"
+        value={ID}
+        onChange={(e) => setID(e.target.value)}
+        name="id"
+        />
+    </label>
+    <label>
+        <div>비밀번호</div>
+        <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        name="password"
+        />
+    </label>
+    <button type="submit">로그인</button>
+</form>
+```
 
-### `npm start`
+중요한 것은 <i>서버에서 받는 dto의 필드 이름과 input tag의 name 값이 같아야 한다.</i>는 것이다!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### 추가: post 데이터 보낸 후 return받은 값 사용하기.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+spring에서 데이터를 받을 때, 바로 DataDto dataDto로 받는 것이 아니라, @ResponseBody annotation을 추가 해서 받으면 값을 return 받을 수 있다!
 
-### `npm test`
+```java
+@PostMapping("/login")
+public ResponseEntity<Object> login(@RequestBody LoginFormDto loginFormDto) {
+    return new ResponseEntity<>(loginFormDto, HttpStatus.OK);
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+위와 같이 PostMapping을 하면 서버에서 validation 후에 값을 return해 줄 수 있다.

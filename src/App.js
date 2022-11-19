@@ -1,25 +1,19 @@
 import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Section from "./components/Section";
+import Login from "./routes/Login";
+import Account from "./routes/Account";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import DetailCategory from "./routes/DetailCategory";
 function App() {
   return (
-    <div>
-      <header className="header__wrap">
-        <Header />
-      </header>
-      <section className="section__wrap">
-        <Section />
-        <Section />
-      </section>
-      <section className="section__wrap">
-        <Section />
-        <Section />
-      </section>
-      <footer>
-        <Footer />
-      </footer>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/category/:category" element={<DetailCategory />} />
+      </Routes>
+    </Router>
   );
 }
 
