@@ -1,7 +1,7 @@
 .detail__container {
   margin: 0 2vw;
 }
-.detail__content__list ul {
+.detail__content__list > ul {
   list-style: none;
   border-top: 3px solid gray;
   border-bottom: 1px solid #c0c0c0;
@@ -9,13 +9,13 @@
   padding-bottom: 1vw;
 }
 
-.detail__content__list ul li {
+.detail__content__list > ul > li {
   display: inline;
   font-size: 2em;
   margin-right: 5vw;
 }
 
-.detail__content__list ul li:hover {
+.detail__content__list > ul > li:hover {
   cursor: pointer;
 }
 
@@ -24,51 +24,84 @@
   flex-direction: column;
 }
 
-.detail__content__container ul {
+.detail__content__container > ul {
   list-style: none;
 }
 
-.detail__content__container ul li {
+.detail__content__container > ul > li {
   display: flex;
   flex-direction: row;
   font-size: 1.25em;
 }
 
 .detail__content__title {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr 2fr 1fr;
+  height: 50px;
+  line-height: 50px;
+  border-top: 3px solid #c0c0c0;
+  border-bottom: 1px solid #c0c0c0;
 }
 
-.detail__content__title div {
-  display: flex;
-  justify-content: center;
-  width: 10%;
-  border: 1px solid teal;
+.detail__content__title > div {
+  display: table-cell;
+  background: #f0f0f0;
+  text-align: center;
+  font-size: 1.25em;
+  box-sizing: border-box;
+  position: relative;
 }
 
-.detail__content__title div:nth-child(2) {
-  width: 60%;
+.detail__content__title > div:not(:last-child):before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1px;
+  height: 13px;
+  background-color: #cacaca;
+  transform: translateY(-50%);
 }
 
 .detail__contents {
   padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.detail__contents > li {
+  border-bottom: 1px solid teal;
 }
 
 .detail__content {
-  display: flex;
-  flex-direction: row;
-  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr 2fr 1fr;
+  height: 50px;
+  line-height: 50px;
 }
 
-.detail__content div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 10%;
-  border: 1px solid tomato;
+.detail__content > div {
+  display: table-cell;
+  font-size: 1.25em;
+  box-sizing: border-box;
+  position: relative;
 }
 
-.detail__content div:nth-child(2) {
-  width: 60%;
-  justify-content: start;
-  padding: 0 2vw;
+.detail__content > div:not(:last-child):before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1px;
+  height: 13px;
+  background-color: #cacaca;
+  transform: translateY(-50%);
+}
+
+.detail__content > div:not(:nth-child(2)) {
+  text-align: center;
+}
+
+.detail__content > div:nth-child(2) {
+  padding: 0 1%;
 }

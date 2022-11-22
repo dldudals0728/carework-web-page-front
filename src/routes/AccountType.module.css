@@ -1,0 +1,31 @@
+.accountType__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  margin: 15px auto;
+}
+
+.accountType__btn__container {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 40px;
+  /* width: 100%; */
+}
+
+.accountType__btn {
+  border: 3px solid teal;
+  text-align: center;
+  width: 250px;
+  height: 250px;
+  line-height: 125px;
+  border-radius: 12px;
+  margin-left: 6vw;
+  margin-right: 6vw;
+}
+
+.accountType__btn__description {
+  box-sizing: border-box;
+  font-size: large;
+}

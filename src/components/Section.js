@@ -1,12 +1,23 @@
+import { Link } from "react-router-dom";
 import styles from "./Section.module.css";
-function Section() {
+function Section(props) {
   return (
-    <div className={styles.section__container}>
+    <div
+      className={styles.section__container}
+      style={{ width: props.styles ? props.styles.width : "" }}
+    >
       <fieldset>
-        <legend className={styles.title}>메뉴</legend>
-        <div className={styles.sction__button__container}>
-          <span className={styles.more}>More</span>
-        </div>
+        <legend className={styles.title}>
+          {props.title ? props.title : "메뉴"}
+        </legend>
+        <Link
+          to={props.more ? props.more : ""}
+          state={props.state ? props.state : {}}
+        >
+          <div className={styles.sction__button__container}>
+            <span className={styles.more}>More</span>
+          </div>
+        </Link>
         <ul className={styles.content}>
           <li>
             <span>항목1</span>

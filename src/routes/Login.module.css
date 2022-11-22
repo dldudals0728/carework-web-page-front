@@ -87,3 +87,9 @@ button:hover {
   background-color: #43434d;
   border-color: #43434d;
 }
+
+.login__validate {
+  color: red;
+  font-size: 0.5em;
+  display: none;
+}

@@ -5,16 +5,6 @@
   align-items: center;
 }
 
-.account__indicator {
-  position: absolute;
-  left: 1vw;
-  top: 1vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .account__container > span {
   font-size: 2.5em;
 }
@@ -30,4 +20,25 @@
   font-size: large;
   margin-bottom: 20px;
   padding: 4px 8px;
+}
+
+.account__idcheck {
+  margin-left: 12px;
+}
+
+.account__id__cantuse {
+  color: red;
+  margin-top: -12px;
+  display: none;
+}
+
+.account__id__canuse {
+  color: blue;
+  margin-top: -12px;
+  display: none;
+}
+
+.account__validate {
+  color: red;
+  /* display: none; */
 }

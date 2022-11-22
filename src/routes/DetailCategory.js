@@ -47,11 +47,11 @@ function DetailCategory() {
 
   useEffect(() => {
     setCategory(params.category);
-    setMenu("전체");
+    location.state ? setMenu(location.state.section) : setMenu("전체");
   }, [params]);
   return (
     <div>
-      <Header />
+      <Header education={params.education} />
       <div></div>
       <div className={styles.detail__container}>
         <div className={styles.detail__content__list}>
@@ -76,10 +76,10 @@ function DetailCategory() {
             <div>날짜</div>
             <div>조회</div>
           </div>
-          <div>
+          <div style={{ width: "100%" }}>
             <ul className={styles.detail__contents}>
               {tempContent.map((c, idx) => (
-                <Link>
+                <Link to={`/${idx}`}>
                   <li className={styles.detail__content} key={idx}>
                     <div>{idx + 1}</div>
                     <div>{c}</div>

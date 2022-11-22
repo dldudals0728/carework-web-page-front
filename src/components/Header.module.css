@@ -13,6 +13,10 @@
   /* margin: 1vh auto; */
 }
 
+.header__logo__img {
+  width: 360px;
+}
+
 .account__menu {
   padding-left: 0;
 }
