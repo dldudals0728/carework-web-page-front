@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/ckeditor__ckeditor5-core": "^27.0.13",
+    "@types/ckeditor__ckeditor5-basic-styles": "^27.0.1",
+    "@types/ckeditor__ckeditor5-editor-classic": "^27.0.0",
+    "@types/ckeditor__ckeditor5-essentials": "^27.0.4",
+    "@types/ckeditor__ckeditor5-paragraph": "^27.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^35.3.2",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

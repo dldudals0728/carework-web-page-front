@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./Account.module.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -6,11 +6,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { IP_ADDRESS } from "../temp/IPAddress";
 import DaumPostcode from "react-daum-postcode";
+import EducationContext from "../components/EducationContext";
 
 function Account() {
   const params = useParams();
   const edu = params.education;
   const navigate = useNavigate();
+  const { pageState, setPageState } = useContext(EducationContext);
   const IP = IP_ADDRESS;
   const [isSend, setIsSend] = useState(false);
   const [name, setName] = useState("");
@@ -178,7 +180,11 @@ function Account() {
   };
   return (
     <div>
-      <Header education={params.education} />
+      <Header
+        education={params.education}
+        isLogin={pageState.isLogin}
+        username={pageState.userName}
+      />
       <div className={styles.account__container}>
         <span>회원가입</span>
         <div className={styles.account__form}>

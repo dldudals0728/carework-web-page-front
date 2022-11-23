@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
+import EducationContext from "../components/EducationContext";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import styles from "./AccountType.module.css";
@@ -6,9 +8,14 @@ import styles from "./AccountType.module.css";
 function AccountType() {
   const params = useParams();
   const edu = params.education;
+  const { pageState, setPageState } = useContext(EducationContext);
   return (
     <div>
-      <Header education={params.education} />
+      <Header
+        education={params.education}
+        isLogin={pageState.isLogin}
+        username={pageState.userName}
+      />
       <div className={styles.accountType__container}>
         <div>회원가입</div>
         <div className={styles.accountType__btn__container}>
