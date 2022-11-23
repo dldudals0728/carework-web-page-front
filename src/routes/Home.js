@@ -12,13 +12,13 @@ function Home() {
   const changeCurrentPage = (pageName) => {
     const prevPageState = { ...pageState };
     prevPageState.page = pageName;
-    console.log(prevPageState);
     setPageState(prevPageState);
   };
   useEffect(() => {
     if (pageState.page === undefined) {
       changeCurrentPage(params.education);
     }
+    console.log(pageState);
   }, []);
 
   if (params.education !== "nynoa") {
@@ -27,7 +27,11 @@ function Home() {
   return (
     <div>
       <header className={styles.header__wrap}>
-        <Header education={params.education} />
+        <Header
+          education={params.education}
+          isLogin={pageState.isLogin}
+          username={pageState.userName}
+        />
       </header>
 
       <section className={styles.home__main}>

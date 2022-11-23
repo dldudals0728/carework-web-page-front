@@ -17,7 +17,7 @@ function Default() {
         <Link to={`/nynoa`} onClick={() => changeCurrentPage("nynoa")}>
           <div className={styles.default__btn}>
             <img
-              src="./nynoa.jpg"
+              src={`${process.env.PUBLIC_URL}/nynoa.jpg`}
               alt="남양노아요양보호사교육원"
               className={styles.default__img}
             />

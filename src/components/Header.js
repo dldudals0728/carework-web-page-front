@@ -1,15 +1,31 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
+import EducationContext from "./EducationContext";
 import styles from "./Header.module.css";
 
 function Header(props) {
   const edu = props.education;
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
+  const { pageState, setPageState } = useContext(EducationContext);
+  const logout = () => {
+    const prevPageState = { ...pageState };
+    prevPageState.userName = "";
+    prevPageState.isLogin = false;
+    prevPageState.userName = "";
+    prevPageState.classNumber = "";
+    prevPageState.classTime = "";
+    setPageState(prevPageState);
+  };
   return (
     <div className={styles.header__container}>
       <div className={styles.account}>
         <ul className={`${styles.menu} ${styles.account__menu}`}>
+          {props.isLogin ? (
+            <li style={{ fontWeight: "bold" }}>
+              환영합니다. {props.username}님!
+            </li>
+          ) : null}
           <li>
             <Link
               to={{
@@ -21,21 +37,33 @@ function Header(props) {
           </li>
 
           <li>
-            <Link
-              to={{
-                pathname: `/${edu}/login`,
-                // state: { year, title, summary, poster, genres },
-              }}
-            >
-              로그인
-            </Link>
+            {props.isLogin ? (
+              <Link
+                to={{
+                  pathname: `/${edu}`,
+                  // state: { year, title, summary, poster, genres },
+                }}
+                onClick={logout}
+              >
+                로그아웃
+              </Link>
+            ) : (
+              <Link
+                to={{
+                  pathname: `/${edu}/login`,
+                  // state: { year, title, summary, poster, genres },
+                }}
+              >
+                로그인
+              </Link>
+            )}
           </li>
         </ul>
       </div>
       <div className={styles.logo}>
         {/* <h1>awsome page</h1> */}
         <img
-          src="/nynoa.jpg"
+          src={`${process.env.PUBLIC_URL}/nynoa.jpg`}
           alt="남양노아요양보호사교육원"
           className={styles.header__logo__img}
         />

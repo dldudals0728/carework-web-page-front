@@ -14,9 +14,10 @@ function Login() {
   const [isWrong, setIsWrong] = useState(false);
   const IP = IP_ADDRESS;
   const { pageState, setPageState } = useContext(EducationContext);
-  const changeLoginState = (isLogin) => {
+  const changeLoginState = (username, isLogin) => {
     const prevPageState = { ...pageState };
     prevPageState.isLogin = isLogin;
+    prevPageState.userName = username;
     setPageState(prevPageState);
   };
   /**
@@ -37,13 +38,20 @@ function Login() {
         if (response.data.status === 490) {
           setIsWrong(true);
           console.log("아이디 또는 비밀번호 오류입니다.");
-          changeLoginState(false);
+          changeLoginState("", false);
         } else {
           setIsWrong(false);
           console.log(`환영합니다. ${response.data.userName}님!`);
           navigate(`/${edu}`);
-          changeLoginState(true);
+          changeLoginState(response.data.userName, true);
         }
+      })
+      .catch((error) => {
+        console.log("error!");
+        console.log(error);
+        setIsWrong(true);
+        console.log("아이디 또는 비밀번호 오류입니다.");
+        changeLoginState("", false);
       });
   };
 
