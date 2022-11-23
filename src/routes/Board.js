@@ -22,7 +22,6 @@ function Board(props) {
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location);
   const { pageState, setPageState } = useContext(EducationContext);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -31,21 +30,6 @@ function Board(props) {
   const [text, setText] = useState("");
 
   const writeBoard = async () => {
-    console.log("제목");
-    console.log(title);
-    console.log("내용");
-    console.log(text);
-
-    console.log(`category: ${category}`);
-    console.log(`menu: ${menu}`);
-
-    console.log("글쓴이");
-    console.log(pageState.userName);
-
-    console.log(Date.now());
-    console.log(new Date());
-    console.log(params);
-
     const res = await axios
       .post(IP + "/board/addBoard", {
         category,
@@ -56,19 +40,12 @@ function Board(props) {
         permission: "ANONYMOUS",
       })
       .then((response) => {
-        console.log(response);
         if (response.data.status === 490) {
-          console.log("게시판 오류입니다.");
-          console.log(response.data);
         } else {
-          console.log(`게시글이 등록되었습니다.`);
           navigate(`/${params.education}/category/${params.category}`);
         }
       })
-      .catch((error) => {
-        console.log("error");
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const changeCategory = (event) => {
@@ -80,7 +57,9 @@ function Board(props) {
   useEffect(() => {
     setCategory(params.category);
     setMenuList(categoryMenu[params.category]);
-    setMenu(categoryMenu[params.category][0]);
+    location.state
+      ? setMenu(location.state.menu)
+      : setMenu(categoryMenu[params.category][0]);
   }, []);
 
   return (

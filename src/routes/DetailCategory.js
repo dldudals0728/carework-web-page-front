@@ -32,8 +32,6 @@ function DetailCategory() {
   const location = useLocation();
   const IP = IP_ADDRESS;
   const { pageState, setPageState } = useContext(EducationContext);
-  console.log(params);
-  console.log(location);
 
   const [category, setCategory] = useState("");
   const [menu, setMenu] = useState("전체");
@@ -43,11 +41,14 @@ function DetailCategory() {
   const showBoard = (event, idx) => {
     event.preventDefault();
     setBoardIndex((prev) => idx);
-    console.log(boardIndex);
+  };
+
+  const gettingReady = (e) => {
+    e.preventDefault();
+    alert("준비중입니다.");
   };
 
   const changeMenu = (event) => {
-    console.log(event.nativeEvent.target.innerHTML);
     setMenu(event.nativeEvent.target.innerHTML);
   };
 
@@ -59,7 +60,6 @@ function DetailCategory() {
   const content = getContent();
 
   const getBoardList = async () => {
-    console.log("get board list");
     let res;
     if (menu === "전체") {
       res = await axios.get(
@@ -70,7 +70,6 @@ function DetailCategory() {
         IP + `/board/selectBoard?category=${params.category}&section=${menu}`
       );
     }
-    console.log(res);
     if (res.data.status === 200) {
       const newBoardList = res.data.boardList;
       newBoardList.forEach(
@@ -83,13 +82,11 @@ function DetailCategory() {
       );
       setBoardList(newBoardList);
     } else {
-      console.log("중복!");
     }
   };
 
   useEffect(() => {
     getBoardList();
-    console.log("menu change");
   }, [menu]);
 
   useEffect(() => {
@@ -127,7 +124,7 @@ function DetailCategory() {
                 ? `/${params.education}/category/${category}/write`
                 : `/${params.education}/login`
             }
-            state={{ menu }}
+            state={pageState.isLogin ? { menu } : null}
           >
             <button type="button">글쓰기</button>
           </Link>
@@ -145,7 +142,8 @@ function DetailCategory() {
               {boardList.map((board, idx) => (
                 <Link
                   // to={`/${params.education}/category/${params.category}/${menu}/${idx}`}
-                  onClick={(e) => showBoard(e, idx)}
+                  // onClick={(e) => showBoard(e, idx)}
+                  onClick={gettingReady}
                 >
                   <li className={styles.detail__content} key={idx}>
                     <div>{idx + 1}</div>

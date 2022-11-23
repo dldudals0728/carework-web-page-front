@@ -20,19 +20,19 @@ function Section(props) {
         </Link>
         <ul className={styles.content}>
           <li>
-            <span>항목1</span>
+            <span>항목1 - 준비중입니다.</span>
             <span>작성자</span>
           </li>
           <li>
-            <span>항목2</span>
+            <span>항목2 - 준비중입니다.</span>
             <span>작성자</span>
           </li>
           <li>
-            <span>항목3</span>
+            <span>항목3 - 준비중입니다.</span>
             <span>작성자</span>
           </li>
           <li>
-            <span>항목4</span>
+            <span>항목4 - 준비중입니다.</span>
             <span>작성자</span>
           </li>
         </ul>

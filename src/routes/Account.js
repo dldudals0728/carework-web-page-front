@@ -55,20 +55,16 @@ function Account() {
   };
 
   const checkDuplicated = async () => {
-    console.log("중복 체크");
-    console.log(id);
     if (id.length > 16 || id.length < 4) {
       setIsDuplicated(true);
       setConfirmedId(id);
       return;
     }
     const res = await axios.get(IP + `/account/idcheck?id=${id}`);
-    console.log(res);
     if (res.data.status === 200) {
       setIsDuplicated(false);
       setConfirmedId(id);
     } else {
-      console.log("중복!");
       setIsDuplicated(true);
       setConfirmedId(id);
     }
@@ -76,9 +72,6 @@ function Account() {
 
   const checkInput = () => {
     const prevInputValid = { ...inputVlidation };
-    console.log(prevInputValid);
-    console.log(password);
-    console.log(checkPwd);
     if (name !== "") {
       prevInputValid.name = true;
     } else {
@@ -136,8 +129,6 @@ function Account() {
   const addUser = async (e) => {
     // e.preventDefault();
     setIsSend(true);
-    console.log(e.nativeEvent);
-    console.log("add user function");
     e.preventDefault();
     let isCorrect = true;
     const checkValidation = checkInput();
@@ -147,7 +138,6 @@ function Account() {
       }
     });
     if (!isCorrect) {
-      console.log("잘못 입력된 값이 존재합니다!");
       return;
     }
     const res = await axios
@@ -162,21 +152,12 @@ function Account() {
         classTime: classTime,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.status === 490) {
-          console.log("회원가입 오류입니다.");
-          console.log(response.data);
         } else {
-          console.log(
-            `회원가입이 완료되었습니다. ${response.data.userName}님!`
-          );
           navigate(`/${edu}`);
         }
       })
-      .catch((error) => {
-        console.log("error");
-        console.log(error);
-      });
+      .catch((error) => {});
   };
   return (
     <div>

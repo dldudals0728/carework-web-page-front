@@ -9,6 +9,11 @@ function AccountType() {
   const params = useParams();
   const edu = params.education;
   const { pageState, setPageState } = useContext(EducationContext);
+
+  const gettingReady = (e) => {
+    e.preventDefault();
+    alert("준비중입니다.");
+  };
   return (
     <div>
       <Header
@@ -19,7 +24,7 @@ function AccountType() {
       <div className={styles.accountType__container}>
         <div>회원가입</div>
         <div className={styles.accountType__btn__container}>
-          <Link>
+          <Link onClick={gettingReady}>
             <div className={styles.accountType__btn}>
               신규 기관
               <div className={styles.accountType__btn__description}>
@@ -27,7 +32,7 @@ function AccountType() {
               </div>
             </div>
           </Link>
-          <Link>
+          <Link onClick={gettingReady}>
             <div className={styles.accountType__btn}>
               기관 관리자
               <div className={styles.accountType__btn__description}>

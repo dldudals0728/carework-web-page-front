@@ -25,32 +25,24 @@ function Login() {
    */
   const login = async (e) => {
     // e.preventDefault();
-    console.log(e.nativeEvent);
     e.preventDefault();
-    console.log("login function");
     const res = await axios
       .post(IP + "/account/login", {
         id: ID,
         password: password,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.status === 490) {
           setIsWrong(true);
-          console.log("아이디 또는 비밀번호 오류입니다.");
           changeLoginState("", false);
         } else {
           setIsWrong(false);
-          console.log(`환영합니다. ${response.data.userName}님!`);
           navigate(`/${edu}`);
           changeLoginState(response.data.userName, true);
         }
       })
       .catch((error) => {
-        console.log("error!");
-        console.log(error);
         setIsWrong(true);
-        console.log("아이디 또는 비밀번호 오류입니다.");
         changeLoginState("", false);
       });
   };
