@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EducationContext from "../components/EducationContext";
+import { IP_ADDRESS } from "../temp/IPAddress";
+import axios from "axios";
 
 const contentInfo = {
   classinfo: {
@@ -28,6 +30,7 @@ function DetailCategory() {
   const tempContent = ["1번글", "2번글", "3번글", "4번글"];
   const params = useParams();
   const location = useLocation();
+  const IP = IP_ADDRESS;
   const { pageState, setPageState } = useContext(EducationContext);
   console.log(params);
   console.log(location);
@@ -35,6 +38,7 @@ function DetailCategory() {
   const [category, setCategory] = useState("");
   const [menu, setMenu] = useState("전체");
   const [boardIndex, setBoardIndex] = useState(0);
+  const [boardList, setBoardList] = useState([]);
 
   const showBoard = (event, idx) => {
     event.preventDefault();
@@ -55,23 +59,43 @@ function DetailCategory() {
   const content = getContent();
 
   const getBoardList = async () => {
-    const res = await axios.get(
-      IP + `/board/selectBoard?category=${params.category}`
-    );
+    console.log("get board list");
+    let res;
+    if (menu === "전체") {
+      res = await axios.get(
+        IP + `/board/selectBoard?category=${params.category}`
+      );
+    } else {
+      res = await axios.get(
+        IP + `/board/selectBoard?category=${params.category}&section=${menu}`
+      );
+    }
     console.log(res);
     if (res.data.status === 200) {
-      setIsDuplicated(false);
-      setConfirmedId(id);
+      const newBoardList = res.data.boardList;
+      newBoardList.forEach(
+        (value) =>
+          (value.publishedDate = `${new Date(
+            value.publishedDate
+          ).getFullYear()}-${
+            new Date(value.publishedDate).getMonth() + 1
+          }-${new Date(value.publishedDate).getDate()}`)
+      );
+      setBoardList(newBoardList);
     } else {
       console.log("중복!");
-      setIsDuplicated(true);
-      setConfirmedId(id);
     }
   };
 
   useEffect(() => {
+    getBoardList();
+    console.log("menu change");
+  }, [menu]);
+
+  useEffect(() => {
     setCategory(params.category);
     location.state ? setMenu(location.state.section) : setMenu("전체");
+    getBoardList();
   }, [params]);
   return (
     <div>
@@ -118,17 +142,17 @@ function DetailCategory() {
           </div>
           <div style={{ width: "100%" }}>
             <ul className={styles.detail__contents}>
-              {tempContent.map((c, idx) => (
+              {boardList.map((board, idx) => (
                 <Link
                   // to={`/${params.education}/category/${params.category}/${menu}/${idx}`}
                   onClick={(e) => showBoard(e, idx)}
                 >
                   <li className={styles.detail__content} key={idx}>
                     <div>{idx + 1}</div>
-                    <div>{c}</div>
-                    <div>관리자</div>
-                    <div>2022-11-19</div>
-                    <div>7</div>
+                    <div>{board.title}</div>
+                    <div>{board.writer}</div>
+                    <div>{board.publishedDate}</div>
+                    <div>준비중입니다.</div>
                   </li>
                 </Link>
               ))}
