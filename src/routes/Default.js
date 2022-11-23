@@ -23,7 +23,7 @@ function Default() {
             />
           </div>
         </Link>
-        <div className={styles.default__btn}>향남노아요양보호사교육원</div>
+        <div className={styles.default__btn}>None</div>
         <div className={styles.default__btn}>None</div>
         <div className={styles.default__btn}>None</div>
         <div className={styles.default__btn}>None</div>

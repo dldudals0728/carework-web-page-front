@@ -18,10 +18,10 @@ function App() {
   });
   return (
     <EducationContext.Provider value={{ pageState, setPageState }}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Routes>
-          <Route path="/" element={<Default />} />
-          <Route index path="/:education" element={<Home />} />
+          <Route path="/" index element={<Default />} />
+          <Route path="/:education" element={<Home />} />
           <Route path="/:education/login" element={<Login />} />
           <Route path="/:education/account" element={<AccountType />} />
           <Route path="/:education/account/student" element={<Account />} />

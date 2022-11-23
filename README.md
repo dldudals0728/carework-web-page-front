@@ -44,3 +44,22 @@ public ResponseEntity<Object> login(@RequestBody LoginFormDto loginFormDto) {
 ```
 
 위와 같이 PostMapping을 하면 서버에서 validation 후에 값을 return해 줄 수 있다.
+
+### react-router-dom & gh-pages
+
+local에서 개발할 때는 path="/"로 했을 떄 정상적으로 라우팅이 된다. 하지만 gh-pages를 이용해 빌드하면 default 경로가 package.json의 homepage URL값으로 되어 "/"로 가지 않고 "/carework-web-page-front"로 가게 된다.<br><br>
+
+이걸 해결하는 방법은 생각보다 간단하다.
+
+```JS
+<BrowserRouter basename={process.env.PUBLIC_URL}>
+    <Routes>
+        ...
+    </Routes>
+</BrowserRouter>
+```
+
+이렇게 basename에 process.env.PUBLIC_URL을 추가해 주면 적절하게 라우팅 된다.<br>
+PUBLIC_URL은 package.json의 homepage URL값으로 설정된다.<br>
+
+- process.env.PUBLIC_URL은 파일을 따로 생성할 필요 없이 그냥 바로 넣어주면 된다! (import 하는 것도 X)
