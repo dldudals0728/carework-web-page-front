@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/carework-web-page-front/static/css/main.adcefda7.css",
-    "main.js": "/carework-web-page-front/static/js/main.3ae48c91.js",
+    "main.js": "/carework-web-page-front/static/js/main.197a5547.js",
     "static/js/787.d3428903.chunk.js": "/carework-web-page-front/static/js/787.d3428903.chunk.js",
     "index.html": "/carework-web-page-front/index.html",
     "main.adcefda7.css.map": "/carework-web-page-front/static/css/main.adcefda7.css.map",
-    "main.3ae48c91.js.map": "/carework-web-page-front/static/js/main.3ae48c91.js.map",
+    "main.197a5547.js.map": "/carework-web-page-front/static/js/main.197a5547.js.map",
     "787.d3428903.chunk.js.map": "/carework-web-page-front/static/js/787.d3428903.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.adcefda7.css",
-    "static/js/main.3ae48c91.js"
+    "static/js/main.197a5547.js"
   ]
 }
