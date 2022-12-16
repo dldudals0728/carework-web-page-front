@@ -10,6 +10,7 @@ import EducationContext from "./components/EducationContext";
 import { useState } from "react";
 import Board from "./routes/Board";
 import BoardContent from "./routes/BoardContent";
+import DatabaseAccess from "./routes/DatabaseAccess";
 function App() {
   const [pageState, setPageState] = useState({
     page: undefined,
@@ -17,6 +18,7 @@ function App() {
     userName: "",
     classNumber: "",
     classTime: "",
+    role: "",
   });
   return (
     <EducationContext.Provider value={{ pageState, setPageState }}>
@@ -38,6 +40,11 @@ function App() {
           <Route
             path="/:education/category/:category/:board_idx"
             element={<BoardContent />}
+          />
+
+          <Route
+            path="/:education/database/:accessor"
+            element={<DatabaseAccess />}
           />
         </Routes>
       </Router>

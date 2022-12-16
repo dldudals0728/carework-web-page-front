@@ -8,7 +8,6 @@ import Header from "../components/Header";
 import { IP_ADDRESS } from "../temp/IPAddress";
 
 function BoardContent() {
-  const tempContent = ["1번글", "2번글", "3번글", "4번글"];
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,11 +20,9 @@ function BoardContent() {
   const [publishedDate, setPublishedDate] = useState(new Date());
 
   const getBoardContent = async () => {
-    console.log(params);
     const res = await axios.get(
       IP + `/board/getBoardContent?boardIdx=${params.board_idx}`
     );
-    console.log(res);
     if (res.data.status === 200) {
       setBoard(res.data.board);
       setPublishedDate(new Date(res.data.board.publishedDate));
@@ -42,6 +39,7 @@ function BoardContent() {
         education={params.education}
         isLogin={pageState.isLogin}
         username={pageState.userName}
+        role={pageState.role}
       />
       <div className={styles.board_content__container}>
         <h1 className={styles.board_content__title}>{board.title}</h1>

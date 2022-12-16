@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { ROLE } from "../constant/Role";
 import Dropdown from "./Dropdown";
 import EducationContext from "./EducationContext";
 import styles from "./Header.module.css";
@@ -15,12 +16,17 @@ function Header(props) {
     prevPageState.userName = "";
     prevPageState.classNumber = "";
     prevPageState.classTime = "";
+    prevPageState.role = "";
     setPageState(prevPageState);
   };
   return (
     <div className={styles.header__container}>
       <div className={styles.account}>
         <ul className={`${styles.menu} ${styles.account__menu}`}>
+          {props.role === "USER" && (
+            <li>{`${pageState.classNumber}기 ${pageState.classTime}`}</li>
+          )}
+          {ROLE[props.role] >= 5 && <li style={{ color: "red" }}>관리자</li>}
           {props.isLogin ? (
             <li style={{ fontWeight: "bold" }}>
               환영합니다. {props.username}님!
@@ -74,7 +80,16 @@ function Header(props) {
         <nav>
           <ul className={`${styles.menu} ${styles.main__menu}`}>
             <li>
-              <Link to={`/${edu}`}>Home</Link>
+              {ROLE[props.role] >= 5 ? (
+                <Link
+                  to={`/${edu}/database/${props.role}`}
+                  style={{ color: "red" }}
+                >
+                  DB 관리자 접속
+                </Link>
+              ) : (
+                <Link to={`/${edu}`}>Home</Link>
+              )}
             </li>
             <li>
               <Link to={`/${edu}/category/classinfo`}>개강 정보</Link>

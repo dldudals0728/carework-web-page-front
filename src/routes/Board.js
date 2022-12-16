@@ -47,15 +47,6 @@ function Board(props) {
         }
       })
       .catch((error) => {});
-
-    // console.log("category:", category);
-    // console.log("section:", menu === "없음" ? "default" : menu);
-    // console.log("title:", title);
-    // console.log("text:", text);
-    // console.log("writer:", pageState.userName);
-    // console.log("permission:", "ANONYMOUS");
-    // console.log("menuList:", menuList);
-    // console.log("menu:", menu);
   };
 
   const changeCategory = (event) => {
@@ -84,6 +75,7 @@ function Board(props) {
         education={params.education}
         isLogin={pageState.isLogin}
         username={pageState.userName}
+        role={pageState.role}
       />
       <div className="board__board">
         <div className="board__header">

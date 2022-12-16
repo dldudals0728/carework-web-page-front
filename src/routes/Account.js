@@ -165,6 +165,7 @@ function Account() {
         education={params.education}
         isLogin={pageState.isLogin}
         username={pageState.userName}
+        role={pageState.role}
       />
       <div className={styles.account__container}>
         <span>회원가입</span>

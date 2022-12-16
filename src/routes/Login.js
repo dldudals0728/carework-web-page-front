@@ -14,10 +14,18 @@ function Login() {
   const [isWrong, setIsWrong] = useState(false);
   const IP = IP_ADDRESS;
   const { pageState, setPageState } = useContext(EducationContext);
-  const changeLoginState = (username, isLogin) => {
+  const changeLoginState = (loginState) => {
     const prevPageState = { ...pageState };
-    prevPageState.isLogin = isLogin;
-    prevPageState.userName = username;
+    prevPageState.isLogin = loginState.status === 200 ? true : false;
+    prevPageState.userName = loginState.userName;
+    prevPageState.role = loginState.role;
+    if (loginState.role === "USER") {
+      prevPageState.classNumber = loginState.classNumber;
+      prevPageState.classTime = loginState.classTime;
+    } else {
+      prevPageState.classNumber = "";
+      prevPageState.classTime = "";
+    }
     setPageState(prevPageState);
   };
   /**
@@ -34,11 +42,11 @@ function Login() {
       .then((response) => {
         if (response.data.status === 490) {
           setIsWrong(true);
-          changeLoginState("", false);
+          changeLoginState(response.data);
         } else {
           setIsWrong(false);
           navigate(`/${edu}`);
-          changeLoginState(response.data.userName, true);
+          changeLoginState(response.data);
         }
       })
       .catch((error) => {

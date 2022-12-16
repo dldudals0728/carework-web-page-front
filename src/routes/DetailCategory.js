@@ -27,7 +27,6 @@ const contentInfo = {
 };
 
 function DetailCategory() {
-  const tempContent = ["1번글", "2번글", "3번글", "4번글"];
   const params = useParams();
   const location = useLocation();
   const IP = IP_ADDRESS;
@@ -43,21 +42,9 @@ function DetailCategory() {
     setBoardIndex((prev) => idx);
   };
 
-  const gettingReady = (e) => {
-    e.preventDefault();
-    alert("준비중입니다.");
-  };
-
   const changeMenu = (event) => {
     setMenu(event.nativeEvent.target.innerHTML);
   };
-
-  const getContent = () => {
-    if (params.category === "classinfo") {
-      return <h1>{params.category}</h1>;
-    }
-  };
-  const content = getContent();
 
   const getBoardList = async () => {
     let res;
@@ -100,6 +87,7 @@ function DetailCategory() {
         education={params.education}
         isLogin={pageState.isLogin}
         username={pageState.userName}
+        role={pageState.role}
       />
       <div></div>
       <div className={styles.detail__container}>

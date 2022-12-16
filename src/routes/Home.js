@@ -18,6 +18,8 @@ function Home() {
     if (pageState.page === undefined) {
       changeCurrentPage(params.education);
     }
+    console.log("params:", params);
+    console.log("pageState:", pageState);
   }, []);
 
   if (params.education !== "nynoa") {
@@ -30,6 +32,7 @@ function Home() {
           education={params.education}
           isLogin={pageState.isLogin}
           username={pageState.userName}
+          role={pageState.role}
         />
       </header>
 

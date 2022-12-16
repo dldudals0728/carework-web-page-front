@@ -20,6 +20,7 @@ function AccountType() {
         education={params.education}
         isLogin={pageState.isLogin}
         username={pageState.userName}
+        role={pageState.role}
       />
       <div className={styles.accountType__container}>
         <div>회원가입</div>
