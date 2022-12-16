@@ -141,9 +141,10 @@ function DetailCategory() {
             <ul className={styles.detail__contents}>
               {boardList.map((board, idx) => (
                 <Link
-                  // to={`/${params.education}/category/${params.category}/${menu}/${idx}`}
+                  to={`/${params.education}/category/${params.category}/${board.id}`}
                   // onClick={(e) => showBoard(e, idx)}
-                  onClick={gettingReady}
+                  // onClick={gettingReady}
+                  key={idx}
                 >
                   <li className={styles.detail__content} key={idx}>
                     <div>{idx + 1}</div>

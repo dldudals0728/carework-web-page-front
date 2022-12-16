@@ -1,0 +1,14 @@
+.board_content__container {
+  margin: 0 2vw;
+}
+
+.board_content__title {
+  font-size: 48px;
+  margin: 0;
+}
+
+.board_content__info {
+  border-top: 3px solid gray;
+  border-bottom: 1px solid #c0c0c0;
+  background-color: #f0f0f0;
+}

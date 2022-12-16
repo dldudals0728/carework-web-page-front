@@ -9,6 +9,7 @@ import Default from "./routes/Default";
 import EducationContext from "./components/EducationContext";
 import { useState } from "react";
 import Board from "./routes/Board";
+import BoardContent from "./routes/BoardContent";
 function App() {
   const [pageState, setPageState] = useState({
     page: undefined,
@@ -33,6 +34,10 @@ function App() {
           <Route
             path="/:education/category/:category/write"
             element={<Board />}
+          />
+          <Route
+            path="/:education/category/:category/:board_idx"
+            element={<BoardContent />}
           />
         </Routes>
       </Router>

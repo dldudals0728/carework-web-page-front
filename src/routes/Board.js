@@ -23,6 +23,7 @@ function Board(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const { pageState, setPageState } = useContext(EducationContext);
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [menuList, setMenuList] = useState([]);
@@ -46,6 +47,15 @@ function Board(props) {
         }
       })
       .catch((error) => {});
+
+    // console.log("category:", category);
+    // console.log("section:", menu === "없음" ? "default" : menu);
+    // console.log("title:", title);
+    // console.log("text:", text);
+    // console.log("writer:", pageState.userName);
+    // console.log("permission:", "ANONYMOUS");
+    // console.log("menuList:", menuList);
+    // console.log("menu:", menu);
   };
 
   const changeCategory = (event) => {
@@ -57,9 +67,15 @@ function Board(props) {
   useEffect(() => {
     setCategory(params.category);
     setMenuList(categoryMenu[params.category]);
-    location.state
-      ? setMenu(location.state.menu)
-      : setMenu(categoryMenu[params.category][0]);
+
+    if (location.state && location.state.menu !== "전체") {
+      setMenu(location.state.menu);
+    } else {
+      setMenu(categoryMenu[params.category][0]);
+    }
+    // location.state
+    //   ? setMenu(location.state.menu)
+    //   : setMenu(categoryMenu[params.category][0]);
   }, []);
 
   return (
@@ -129,7 +145,14 @@ function Board(props) {
           }}
         />
         <div className="board__btn__container">
-          <button type="button">취소</button>
+          <button
+            type="button"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            취소
+          </button>
           <button type="button" onClick={writeBoard}>
             게시하기
           </button>

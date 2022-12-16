@@ -62,11 +62,13 @@ function Header(props) {
       </div>
       <div className={styles.logo}>
         {/* <h1>awsome page</h1> */}
-        <img
-          src={`${process.env.PUBLIC_URL}/nynoa.jpg`}
-          alt="남양노아요양보호사교육원"
-          className={styles.header__logo__img}
-        />
+        <Link to={`/${edu}`}>
+          <img
+            src={`${process.env.PUBLIC_URL}/nynoa.jpg`}
+            alt="남양노아요양보호사교육원"
+            className={styles.header__logo__img}
+          />
+        </Link>
       </div>
       <div>
         <nav>
