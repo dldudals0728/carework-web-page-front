@@ -1,11 +1,12 @@
 import axios from "axios";
 import styles from "./BoardContent.module.css";
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import EducationContext from "../components/EducationContext";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { IP_ADDRESS } from "../temp/IPAddress";
+import { ROLE } from "../constant/Role";
 
 function BoardContent() {
   const params = useParams();
@@ -29,6 +30,14 @@ function BoardContent() {
     }
   };
 
+  const addViewCnt = async () => {
+    console.log(board);
+  };
+
+  useEffect(() => {
+    addViewCnt();
+  }, [board]);
+
   useEffect(() => {
     getBoardContent();
   }, []);
@@ -44,17 +53,35 @@ function BoardContent() {
       <div className={styles.board_content__container}>
         <h1 className={styles.board_content__title}>{board.title}</h1>
         <div className={styles.board_content__info}>
-          <div>작성자: {board.writer}</div>
           <div>
-            작성일:{" "}
-            {`${publishedDate.getFullYear()}-${
-              publishedDate.getMonth() + 1
-            }-${publishedDate.getDate()} ${publishedDate.getHours()}:${publishedDate.getMinutes()}`}
+            <div>작성자: {board.writer}</div>
+            <div>
+              작성일:{" "}
+              {`${publishedDate.getFullYear()}-${
+                publishedDate.getMonth() + 1
+              }-${publishedDate.getDate()} ${publishedDate.getHours()}:${publishedDate.getMinutes()}`}
+            </div>
           </div>
+          <div>조회수: 0</div>
         </div>
         <div dangerouslySetInnerHTML={{ __html: board.text }}></div>
         <div className="board__btn__container">
-          {pageState.isLogin && <button type="button">수정</button>}
+          {pageState.isLogin && ROLE[pageState.role] >= 5 && (
+            <Link
+              to={`/${params.education}/category/${params.category}/update/${params.board_idx}`}
+              state={
+                pageState.isLogin
+                  ? {
+                      boardIdx: params.board_idx,
+                      menu: board.section,
+                      mode: "update",
+                    }
+                  : null
+              }
+            >
+              <button type="button">수정</button>
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => {

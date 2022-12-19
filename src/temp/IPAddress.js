@@ -1,4 +1,6 @@
 // AWS Server
 // export const IP_ADDRESS = "http://www.mycarework.shop";
 
-export const IP_ADDRESS = "http://CTSOFT";
+import { CTSOFT_IP } from "./CTSoft";
+
+export const IP_ADDRESS = `http://${CTSOFT_IP}`;

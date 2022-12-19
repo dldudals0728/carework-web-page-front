@@ -34,11 +34,15 @@ function App() {
             element={<DetailCategory />}
           />
           <Route
-            path="/:education/category/:category/write"
+            path="/:education/category/:category/:mode"
             element={<Board />}
           />
           <Route
-            path="/:education/category/:category/:board_idx"
+            path="/:education/category/:category/:mode/:boardIdx"
+            element={<Board />}
+          />
+          <Route
+            path="/:education/category/:category/detail/:board_idx"
             element={<BoardContent />}
           />
 

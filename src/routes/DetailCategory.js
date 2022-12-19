@@ -36,6 +36,9 @@ function DetailCategory() {
   const [menu, setMenu] = useState("전체");
   const [boardIndex, setBoardIndex] = useState(0);
   const [boardList, setBoardList] = useState([]);
+  const [boardPage, setBoardPage] = useState({});
+  const [boardPageList, setBoardPageList] = useState([]);
+  const [currentBoardPage, setCurrentBoardPage] = useState(0);
 
   const showBoard = (event, idx) => {
     event.preventDefault();
@@ -58,7 +61,7 @@ function DetailCategory() {
       );
     }
     if (res.data.status === 200) {
-      const newBoardList = res.data.boardList;
+      const newBoardList = res.data.boardList.content;
       newBoardList.forEach(
         (value) =>
           (value.publishedDate = `${new Date(
@@ -67,10 +70,54 @@ function DetailCategory() {
             new Date(value.publishedDate).getMonth() + 1
           }-${new Date(value.publishedDate).getDate()}`)
       );
+
+      const boardPageInfo = { ...res.data.boardList };
+      delete boardPageInfo.content;
+      setBoardList(newBoardList);
+      setBoardPage(boardPageInfo);
+      const boardPages = Array.from(
+        { length: boardPageInfo.totalPages },
+        (value, index) => index + 1
+      );
+      setBoardPageList(boardPages);
+      setCurrentBoardPage(0);
+    } else {
+    }
+  };
+
+  const changeBoardPage = async () => {
+    let res;
+    let url;
+    if (menu === "전체") {
+      url = IP + `/board/selectBoard?category=${params.category}`;
+    } else {
+      url =
+        IP + `/board/selectBoard?category=${params.category}&section=${menu}`;
+    }
+    url += `&size=20&page=${currentBoardPage}`;
+    res = await axios.get(url);
+
+    if (res.data.status === 200) {
+      const newBoardList = res.data.boardList.content;
+      newBoardList.forEach(
+        (value) =>
+          (value.publishedDate = `${new Date(
+            value.publishedDate
+          ).getFullYear()}-${
+            new Date(value.publishedDate).getMonth() + 1
+          }-${new Date(value.publishedDate).getDate()}`)
+      );
+
+      const boardPageInfo = { ...res.data.boardList };
+      delete boardPageInfo.content;
       setBoardList(newBoardList);
     } else {
     }
   };
+
+  useEffect(() => {
+    changeBoardPage();
+  }, [currentBoardPage]);
 
   useEffect(() => {
     getBoardList();
@@ -109,10 +156,10 @@ function DetailCategory() {
           <Link
             to={
               pageState.isLogin
-                ? `/${params.education}/category/${category}/write`
+                ? `/${params.education}/category/${category}/insert`
                 : `/${params.education}/login`
             }
-            state={pageState.isLogin ? { menu } : null}
+            state={pageState.isLogin ? { menu, mode: "insert" } : null}
           >
             <button type="button">글쓰기</button>
           </Link>
@@ -129,7 +176,7 @@ function DetailCategory() {
             <ul className={styles.detail__contents}>
               {boardList.map((board, idx) => (
                 <Link
-                  to={`/${params.education}/category/${params.category}/${board.id}`}
+                  to={`/${params.education}/category/${params.category}/detail/${board.id}`}
                   // onClick={(e) => showBoard(e, idx)}
                   // onClick={gettingReady}
                   key={idx}
@@ -139,9 +186,46 @@ function DetailCategory() {
                     <div>{board.title}</div>
                     <div>{board.writer}</div>
                     <div>{board.publishedDate}</div>
-                    <div>준비중입니다.</div>
+                    <div>{board.viewCount}</div>
                   </li>
                 </Link>
+              ))}
+            </ul>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <ul
+              style={{
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {boardPageList.map((pageNumber, index) => (
+                <li
+                  key={pageNumber}
+                  style={{
+                    display: "flex",
+                    border: "1px solid #eaeaea",
+                    width: "2em",
+                    height: "2em",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "0 1vw",
+                    cursor: "pointer",
+                    backgroundColor:
+                      index === currentBoardPage ? "black" : "inherit",
+                    color: index === currentBoardPage ? "#eaeaea" : "black",
+                  }}
+                  onClick={() => setCurrentBoardPage(index)}
+                >
+                  {pageNumber}
+                </li>
               ))}
             </ul>
           </div>

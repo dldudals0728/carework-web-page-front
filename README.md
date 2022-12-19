@@ -63,3 +63,29 @@ local에서 개발할 때는 path="/"로 했을 떄 정상적으로 라우팅이
 PUBLIC_URL은 package.json의 homepage URL값으로 설정된다.<br>
 
 - process.env.PUBLIC_URL은 파일을 따로 생성할 필요 없이 그냥 바로 넣어주면 된다! (import 하는 것도 X)
+
+### 미친 ERROR
+
+Back-End 단의 spring boot에서 pageable을 이용하여 페이지를 나눈 상태로 값을 넘겨주도록 변경했다.
+
+근데 계속 parameter로 ?page=0, 1, 2, 3을 넘겨주는데 content가 빈 배열로 돌아오는 문제가 있었다......
+
+그 원인은!! 내가 파라미터를 잘못 쓴것 ... ㅋ
+
+> 기존의 내 url 링크
+
+```
+http://172.30.1.5:8080/board/selectBoard?category=classinfo?size=20&pages=0
+```
+
+> 수정 후의 url 링크
+
+```
+http://172.30.1.5:8080/board/selectBoard?category=classinfo&size=20&page=0
+```
+
+결론은 기존에 내가 @RequestParam을 이용하기 위해 링크에 '?'를 추가했었는데, pageable 쓰겠다고 '?'를 한번 더 쓴 것이다...ㅋ
+
+그냥 바로 '&'로 연결해서 사용하면 되는데....ㅠ
+
+내 3시간 안녕.

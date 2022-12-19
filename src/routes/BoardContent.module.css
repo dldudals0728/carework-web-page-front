@@ -11,4 +11,17 @@
   border-top: 3px solid gray;
   border-bottom: 1px solid #c0c0c0;
   background-color: #f0f0f0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2vw;
+}
+
+.board_content__info > div {
+  margin: 1vh 0;
+}
+
+.board_content__view_count {
+  margin-right: 3vw;
 }

@@ -30,7 +30,16 @@ function Board(props) {
   const [menu, setMenu] = useState("");
   const [text, setText] = useState("");
 
+  const [mode, setMode] = useState("");
+
+  const [board, setBoard] = useState({});
+
+  console.log("params:", params);
+  console.log("location:", location);
+
   const writeBoard = async () => {
+    console.log(mode);
+    return;
     const res = await axios
       .post(IP + "/board/addBoard", {
         category,
@@ -55,9 +64,38 @@ function Board(props) {
     setMenu(categoryMenu[event.target.value][0]);
   };
 
+  const setTitleText = async () => {
+    console.log("==================================");
+    console.log("==================================");
+    console.log("==================================");
+    console.log("==================================");
+    console.log("==================================");
+    console.log("==================================");
+    console.log("mode:", mode);
+    if (mode === "insert") {
+      return;
+    } else if (mode === "update") {
+      const res = await axios.get(
+        IP + `/board/getBoardContent?boardIdx=${params.board_idx}`
+      );
+
+      console.log("==================================");
+      console.log(res.data);
+      console.log("==================================");
+    }
+  };
+
+  useEffect(() => {
+    setTitleText();
+  }, [mode]);
+
   useEffect(() => {
     setCategory(params.category);
     setMenuList(categoryMenu[params.category]);
+    setMode(params.mode);
+
+    console.log("현재 카테고리:", params.category);
+    console.log("현재 메뉴 리스트:", categoryMenu[params.category]);
 
     if (location.state && location.state.menu !== "전체") {
       setMenu(location.state.menu);
