@@ -34,6 +34,20 @@ function BoardContent() {
     console.log(board);
   };
 
+  const deleteBoardContent = async () => {
+    const res = await axios
+      .post(IP + `/board/deleteBoard?boardIdx=${params.board_idx}`)
+      .then((response) => {
+        if (response.data.status === 500) {
+          console.log("something is wrong!");
+        } else {
+          navigate(`/${params.education}/category/${params.category}`);
+        }
+      })
+      .catch((error) => {});
+    alert("삭제가 완료되었습니다.");
+  };
+
   useEffect(() => {
     addViewCnt();
   }, [board]);
@@ -67,20 +81,33 @@ function BoardContent() {
         <div dangerouslySetInnerHTML={{ __html: board.text }}></div>
         <div className="board__btn__container">
           {pageState.isLogin && ROLE[pageState.role] >= 5 && (
-            <Link
-              to={`/${params.education}/category/${params.category}/update/${params.board_idx}`}
-              state={
-                pageState.isLogin
-                  ? {
-                      boardIdx: params.board_idx,
-                      menu: board.section,
-                      mode: "update",
-                    }
-                  : null
-              }
-            >
-              <button type="button">수정</button>
-            </Link>
+            <div>
+              <button
+                style={{
+                  marginRight: "1vw",
+                  backgroundColor: "#f7bdbd",
+                  color: "black",
+                  borderColor: "red",
+                }}
+                onClick={() => deleteBoardContent()}
+              >
+                삭제
+              </button>
+              <Link
+                to={`/${params.education}/category/${params.category}/update/${params.board_idx}`}
+                state={
+                  pageState.isLogin
+                    ? {
+                        boardIdx: params.board_idx,
+                        menu: board.section,
+                        mode: "update",
+                      }
+                    : null
+                }
+              >
+                <button type="button">수정</button>
+              </Link>
+            </div>
           )}
           <button
             type="button"

@@ -58,6 +58,7 @@ function Board(props) {
         }
       })
       .catch((error) => {});
+    alert("수정이 완료되었습니다.");
   };
 
   const writeBoard = async () => {
@@ -79,6 +80,7 @@ function Board(props) {
         }
       })
       .catch((error) => {});
+    alert("게시글이 등록되었습니다.");
   };
 
   const changeCategory = (event) => {
@@ -192,7 +194,12 @@ function Board(props) {
             // console.log("Blur.", editor);
           }}
           onFocus={(event, editor) => {
-            editor.setData(text);
+            if (mode === "update") {
+              editor.setData(text);
+            } else {
+              editor.setData("");
+              setText("");
+            }
             // console.log("on Focus!");
             // console.log("Focus.", editor);
           }}
