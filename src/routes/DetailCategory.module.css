@@ -105,3 +105,14 @@
 .detail__content > div:nth-child(2) {
   padding: 0 1%;
 }
+
+.detail__page_btn {
+  display: flex;
+  border: 1px solid #eaeaea;
+  width: 2em;
+  height: 2em;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1vw;
+  cursor: pointer;
+}

@@ -61,7 +61,7 @@ function DetailCategory() {
       );
     }
     if (res.data.status === 200) {
-      const newBoardList = res.data.boardList.content;
+      const newBoardList = [...res.data.boardList.content];
       newBoardList.forEach(
         (value) =>
           (value.publishedDate = `${new Date(
@@ -76,7 +76,7 @@ function DetailCategory() {
       setBoardList(newBoardList);
       setBoardPage(boardPageInfo);
       const boardPages = Array.from(
-        { length: boardPageInfo.totalPages },
+        { length: Math.min(Math.max(boardPageInfo.totalPages, 1), 5) },
         (value, index) => index + 1
       );
       setBoardPageList(boardPages);
@@ -94,7 +94,7 @@ function DetailCategory() {
       url =
         IP + `/board/selectBoard?category=${params.category}&section=${menu}`;
     }
-    url += `&size=20&page=${currentBoardPage}`;
+    url += `&size=10&page=${currentBoardPage}`;
     res = await axios.get(url);
 
     if (res.data.status === 200) {
@@ -108,11 +108,24 @@ function DetailCategory() {
           }-${new Date(value.publishedDate).getDate()}`)
       );
 
-      const boardPageInfo = { ...res.data.boardList };
-      delete boardPageInfo.content;
       setBoardList(newBoardList);
+      const pageGroup = parseInt(currentBoardPage / 5);
+      const boardPages = Array.from(
+        { length: Math.min(boardPage.totalPages, 5) },
+        (value, index) => pageGroup * 5 + index + 1
+      );
+      setBoardPageList(boardPages);
     } else {
     }
+  };
+
+  const changeCurrentPage = (page) => {
+    if (page < 0) {
+      page = 0;
+    } else if (page >= boardPage.totalPages) {
+      page = boardPage.totalPages - 1;
+    }
+    setCurrentBoardPage(page);
   };
 
   useEffect(() => {
@@ -206,27 +219,66 @@ function DetailCategory() {
                 flexDirection: "row",
               }}
             >
+              <li
+                className={styles.detail__page_btn}
+                onClick={() => changeCurrentPage(0)}
+                style={{
+                  color: currentBoardPage === 0 ? "#c0c0c0" : "black",
+                }}
+              >{`< <`}</li>
+              <li
+                className={styles.detail__page_btn}
+                style={{
+                  color: currentBoardPage === 0 ? "#c0c0c0" : "black",
+                }}
+                onClick={() => changeCurrentPage(currentBoardPage - 1)}
+              >{`<`}</li>
               {boardPageList.map((pageNumber, index) => (
                 <li
                   key={pageNumber}
+                  className={styles.detail__page_btn}
                   style={{
-                    display: "flex",
-                    border: "1px solid #eaeaea",
-                    width: "2em",
-                    height: "2em",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: "0 1vw",
-                    cursor: "pointer",
                     backgroundColor:
-                      index === currentBoardPage ? "black" : "inherit",
-                    color: index === currentBoardPage ? "#eaeaea" : "black",
+                      pageNumber - 1 === currentBoardPage ? "black" : "inherit",
+                    color:
+                      pageNumber - 1 === currentBoardPage ? "#eaeaea" : "black",
                   }}
-                  onClick={() => setCurrentBoardPage(index)}
+                  onClick={() => changeCurrentPage(pageNumber - 1)}
                 >
                   {pageNumber}
                 </li>
               ))}
+              {boardPage.totalPages > 5 && (
+                <span style={{ display: "flex", flexDirection: "row" }}>
+                  ...
+                  <li
+                    className={styles.detail__page_btn}
+                    onClick={() => changeCurrentPage(boardPage.totalPages - 1)}
+                  >
+                    {boardPage.totalPages}
+                  </li>
+                </span>
+              )}
+              <li
+                className={styles.detail__page_btn}
+                style={{
+                  color:
+                    currentBoardPage + 1 === boardPage.totalPages
+                      ? "#c0c0c0"
+                      : "black",
+                }}
+                onClick={() => changeCurrentPage(currentBoardPage + 1)}
+              >{`>`}</li>
+              <li
+                className={styles.detail__page_btn}
+                style={{
+                  color:
+                    currentBoardPage + 1 === boardPage.totalPages
+                      ? "#c0c0c0"
+                      : "black",
+                }}
+                onClick={() => changeCurrentPage(boardPage.totalPages - 1)}
+              >{`> >`}</li>
             </ul>
           </div>
         </div>

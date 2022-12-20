@@ -204,6 +204,9 @@ function Board(props) {
             // console.log("Focus.", editor);
           }}
         />
+        <div>
+          <input type="file" accept="image/*" />
+        </div>
         <div className="board__btn__container">
           <button
             type="button"
