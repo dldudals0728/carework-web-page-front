@@ -28,7 +28,7 @@ function Board(props) {
   const [category, setCategory] = useState("");
   const [menuList, setMenuList] = useState([]);
   const [menu, setMenu] = useState("");
-  const [text, setText] = useState("");
+  const [text, setText] = useState("본문을 선택하면 수정할 수 있습니다.");
 
   const [mode, setMode] = useState("");
 
@@ -37,9 +37,31 @@ function Board(props) {
   console.log("params:", params);
   console.log("location:", location);
 
+  const updateBoard = async () => {
+    console.log("updateBoard is called");
+    let url = IP + "/board/updateBoard";
+    url += `?boardIdx=${params.boardIdx}`;
+    const res = await axios
+      .post(url, {
+        category,
+        section: menu === "없음" ? "default" : menu,
+        title,
+        text,
+        writer: pageState.userName,
+        permission: "ANONYMOUS",
+      })
+      .then((response) => {
+        if (response.data.status === 500) {
+          console.log("something is wrong!");
+        } else {
+          navigate(`/${params.education}/category/${params.category}`);
+        }
+      })
+      .catch((error) => {});
+  };
+
   const writeBoard = async () => {
-    console.log(mode);
-    return;
+    console.log("writeBoard is called");
     const res = await axios
       .post(IP + "/board/addBoard", {
         category,
@@ -50,7 +72,8 @@ function Board(props) {
         permission: "ANONYMOUS",
       })
       .then((response) => {
-        if (response.data.status === 490) {
+        if (response.data.status === 500) {
+          console.log("something is wrong!");
         } else {
           navigate(`/${params.education}/category/${params.category}`);
         }
@@ -65,27 +88,23 @@ function Board(props) {
   };
 
   const setTitleText = async () => {
-    console.log("==================================");
-    console.log("==================================");
-    console.log("==================================");
-    console.log("==================================");
-    console.log("==================================");
-    console.log("==================================");
     console.log("mode:", mode);
     if (mode === "insert") {
+      console.log("mode is insert. not working.");
       return;
     } else if (mode === "update") {
+      console.log("mode is update. set title and text.");
       const res = await axios.get(
-        IP + `/board/getBoardContent?boardIdx=${params.board_idx}`
+        IP + `/board/getBoardContent?boardIdx=${params.boardIdx}`
       );
 
-      console.log("==================================");
-      console.log(res.data);
-      console.log("==================================");
+      setTitle(res.data.board.title);
+      setText(res.data.board.text);
     }
   };
 
   useEffect(() => {
+    // console.log("mode is changed!");
     setTitleText();
   }, [mode]);
 
@@ -94,8 +113,9 @@ function Board(props) {
     setMenuList(categoryMenu[params.category]);
     setMode(params.mode);
 
-    console.log("현재 카테고리:", params.category);
-    console.log("현재 메뉴 리스트:", categoryMenu[params.category]);
+    if (params.mode === "update") {
+      setTitleText();
+    }
 
     if (location.state && location.state.menu !== "전체") {
       setMenu(location.state.menu);
@@ -157,6 +177,8 @@ function Board(props) {
           onReady={(editor) => {
             // You can store the "editor" and use when it is needed.
             console.log("Editor is ready to use!", editor);
+            console.log(editor.getData());
+            editor.setData(text);
           }}
           onChange={(event, editor) => {
             // console.log("on Change!");
@@ -170,6 +192,7 @@ function Board(props) {
             // console.log("Blur.", editor);
           }}
           onFocus={(event, editor) => {
+            editor.setData(text);
             // console.log("on Focus!");
             // console.log("Focus.", editor);
           }}
@@ -183,8 +206,17 @@ function Board(props) {
           >
             취소
           </button>
-          <button type="button" onClick={writeBoard}>
-            게시하기
+          <button
+            type="button"
+            onClick={() => {
+              if (mode === "insert") {
+                writeBoard();
+              } else if (mode === "update") {
+                updateBoard();
+              }
+            }}
+          >
+            {mode === "insert" ? "게시하기" : "수정하기"}
           </button>
         </div>
       </div>

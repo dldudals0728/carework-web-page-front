@@ -40,7 +40,7 @@ function Login() {
         password: password,
       })
       .then((response) => {
-        if (response.data.status === 490) {
+        if (response.data.status === 500) {
           setIsWrong(true);
           changeLoginState(response.data);
         } else {

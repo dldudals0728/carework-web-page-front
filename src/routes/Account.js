@@ -152,7 +152,7 @@ function Account() {
         classTime: classTime,
       })
       .then((response) => {
-        if (response.data.status === 490) {
+        if (response.data.status === 500) {
         } else {
           navigate(`/${edu}`);
         }
