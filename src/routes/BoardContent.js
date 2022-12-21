@@ -15,10 +15,21 @@ function BoardContent() {
   const IP = IP_ADDRESS;
   const { pageState, setPageState } = useContext(EducationContext);
 
-  console.log(pageState);
-
   const [board, setBoard] = useState({});
   const [publishedDate, setPublishedDate] = useState(new Date());
+
+  const [imgList, setImgList] = useState([]);
+
+  const getBoardImage = async () => {
+    const res = await axios.get(
+      IP + `/img/getImg?boardIdx=${params.board_idx}`
+    );
+    if (res.data.status === 500) {
+      setImgList([]);
+    } else if (res.data.status === 200) {
+      setImgList(res.data.images);
+    }
+  };
 
   const getBoardContent = async () => {
     const res = await axios.get(
@@ -27,6 +38,7 @@ function BoardContent() {
     if (res.data.status === 200) {
       setBoard(res.data.board);
       setPublishedDate(new Date(res.data.board.publishedDate));
+      getBoardImage();
     }
   };
 
@@ -79,6 +91,17 @@ function BoardContent() {
           <div>조회수: 0</div>
         </div>
         <div dangerouslySetInnerHTML={{ __html: board.text }}></div>
+        <div>
+          {imgList.map((image) => {
+            return (
+              <img
+                key={image.id}
+                src={"http://localhost:8080/images/" + image.imgName}
+                alt={"img" + image.id}
+              />
+            );
+          })}
+        </div>
         <div className="board__btn__container">
           {pageState.isLogin && ROLE[pageState.role] >= 5 && (
             <div>

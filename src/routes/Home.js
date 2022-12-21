@@ -18,8 +18,6 @@ function Home() {
     if (pageState.page === undefined) {
       changeCurrentPage(params.education);
     }
-    console.log("params:", params);
-    console.log("pageState:", pageState);
   }, []);
 
   if (params.education !== "nynoa") {

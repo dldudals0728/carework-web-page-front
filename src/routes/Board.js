@@ -34,11 +34,77 @@ function Board(props) {
 
   const [board, setBoard] = useState({});
 
-  console.log("params:", params);
-  console.log("location:", location);
+  const [imgFile, setImgFile] = useState([]);
+  const [imgBase64, setImgBase64] = useState([]);
+
+  const uploadImgFile = async (boardIdx) => {
+    if (imgFile.length === 0) {
+      return;
+    }
+
+    const fd = new FormData();
+    for (let i = 0; i < imgFile.length; i++) {
+      fd.append("file", imgFile[i]);
+    }
+
+    fd.append("mappingBoard", boardIdx);
+    fd.append("comment", "comment text");
+
+    const res = await axios
+      .post(IP + "/img/upload", fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        if (response.data) {
+          setImgFile(null);
+          setImgBase64([]);
+          console.log("이미지가 업로드 되었습니다.");
+        }
+      })
+      .catch((error) => {
+        console.log("이미지 업로드에 실패하였습니다.");
+        if (error.response) {
+          console.log(
+            "요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다."
+          );
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log("요청이 이루어 졌으나 응답을 받지 못했습니다.");
+          // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+          // Node.js의 http.ClientRequest 인스턴스입니다.
+          console.log(error.request);
+        } else {
+          console.log(
+            "오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다."
+          );
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
+  };
+
+  const handleChangeFile = (event) => {
+    console.log(event.target.files);
+    setImgFile(event.target.files);
+    setImgBase64([]);
+    for (let i = 0; i < event.target.files.length; i++) {
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[i]);
+      reader.onload = () => {
+        const base64 = reader.result;
+        if (base64) {
+          const base64Sub = base64.toString();
+          setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+        }
+      };
+    }
+  };
 
   const updateBoard = async () => {
-    console.log("updateBoard is called");
     let url = IP + "/board/updateBoard";
     url += `?boardIdx=${params.boardIdx}`;
     const res = await axios
@@ -62,24 +128,28 @@ function Board(props) {
   };
 
   const writeBoard = async () => {
-    console.log("writeBoard is called");
-    const res = await axios
-      .post(IP + "/board/addBoard", {
-        category,
-        section: menu === "없음" ? "default" : menu,
-        title,
-        text,
-        writer: pageState.userName,
-        permission: "ANONYMOUS",
-      })
-      .then((response) => {
-        if (response.data.status === 500) {
-          console.log("something is wrong!");
-        } else {
-          navigate(`/${params.education}/category/${params.category}`);
-        }
-      })
-      .catch((error) => {});
+    const res = await axios.post(IP + "/board/addBoard", {
+      category,
+      section: menu === "없음" ? "default" : menu,
+      title,
+      text,
+      writer: pageState.userName,
+      permission: "ANONYMOUS",
+    });
+    // .then((response) => {
+    //   if (response.data.status === 500) {
+    //     console.log("something is wrong!");
+    //   } else {
+    //     console.log("board가 정상적으로 작성되었습니다.");
+    //     navigate(`/${params.education}/category/${params.category}`);
+    //   }
+    // })
+    // .catch((error) => {});
+    console.log(res.data.board.id);
+    uploadImgFile(JSON.stringify(res.data.board.id));
+    if (res) {
+      navigate(`/${params.education}/category/${params.category}`);
+    }
     alert("게시글이 등록되었습니다.");
   };
 
@@ -90,12 +160,9 @@ function Board(props) {
   };
 
   const setTitleText = async () => {
-    console.log("mode:", mode);
     if (mode === "insert") {
-      console.log("mode is insert. not working.");
       return;
     } else if (mode === "update") {
-      console.log("mode is update. set title and text.");
       const res = await axios.get(
         IP + `/board/getBoardContent?boardIdx=${params.boardIdx}`
       );
@@ -106,7 +173,6 @@ function Board(props) {
   };
 
   useEffect(() => {
-    // console.log("mode is changed!");
     setTitleText();
   }, [mode]);
 
@@ -205,7 +271,25 @@ function Board(props) {
           }}
         />
         <div>
-          <input type="file" accept="image/*" />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            // value={selectedFile}
+            onChange={handleChangeFile}
+          />
+          <div>
+            {imgBase64.map((img, idx) => {
+              return (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={"First slids"}
+                  style={{ width: "200px", height: "150px" }}
+                />
+              );
+            })}
+          </div>
         </div>
         <div className="board__btn__container">
           <button

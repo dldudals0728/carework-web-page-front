@@ -111,7 +111,7 @@ function DetailCategory() {
       setBoardList(newBoardList);
       const pageGroup = parseInt(currentBoardPage / 5);
       const boardPages = Array.from(
-        { length: Math.min(boardPage.totalPages, 5) },
+        { length: Math.min(boardPage.totalPages - pageGroup * 5, 5) },
         (value, index) => pageGroup * 5 + index + 1
       );
       setBoardPageList(boardPages);
@@ -195,7 +195,7 @@ function DetailCategory() {
                   key={idx}
                 >
                   <li className={styles.detail__content} key={idx}>
-                    <div>{idx + 1}</div>
+                    <div>{currentBoardPage * 10 + (idx + 1)}</div>
                     <div>{board.title}</div>
                     <div>{board.writer}</div>
                     <div>{board.publishedDate}</div>
