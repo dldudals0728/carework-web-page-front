@@ -64,6 +64,12 @@ PUBLIC_URL은 package.json의 homepage URL값으로 설정된다.<br>
 
 - process.env.PUBLIC_URL은 파일을 따로 생성할 필요 없이 그냥 바로 넣어주면 된다! (import 하는 것도 X)
 
+## simple error code
+
+```
+405: 정의된 method와 다른 method를 이용하여 URL에 접근했을 경우
+```
+
 ### 미친 ERROR
 
 Back-End 단의 spring boot에서 pageable을 이용하여 페이지를 나눈 상태로 값을 넘겨주도록 변경했다.

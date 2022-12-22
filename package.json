@@ -2,6 +2,7 @@
   "name": "my-page",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://127.0.0.1:8080",
   "dependencies": {
     "@types/ckeditor__ckeditor5-core": "^27.0.13",
     "@types/ckeditor__ckeditor5-basic-styles": "^27.0.1",

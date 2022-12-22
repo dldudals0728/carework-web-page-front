@@ -34,25 +34,58 @@ function Login() {
   const login = async (e) => {
     // e.preventDefault();
     e.preventDefault();
+    // const url = IP + "/account/login";
+    // const url = IP + "/account/sessionLogin";
+    const url = IP + "/account/cookieLogin";
     const res = await axios
-      .post(IP + "/account/login", {
-        id: ID,
-        password: password,
-      })
+      .post(
+        url,
+        {
+          id: ID,
+          password: password,
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         if (response.data.status === 500) {
           setIsWrong(true);
           changeLoginState(response.data);
         } else {
-          setIsWrong(false);
-          navigate(`/${edu}`);
-          changeLoginState(response.data);
+          console.log(response);
+          // setIsWrong(false);
+          // navigate(`/${edu}`);
+          // changeLoginState(response.data);
         }
       })
       .catch((error) => {
         setIsWrong(true);
         changeLoginState("", false);
       });
+
+    // setTimeout(async () => {
+    //   const url = IP + "/account/homeLogin";
+    //   const res = await axios
+    //     .get(url, {
+    //       id: ID,
+    //       password: password,
+    //     })
+    //     .then((response) => {
+    //       if (response.data.status === 500) {
+    //         setIsWrong(true);
+    //         changeLoginState(response.data);
+    //       } else {
+    //         console.log("home log in");
+    //         console.log(response);
+    //         // setIsWrong(false);
+    //         // navigate(`/${edu}`);
+    //         // changeLoginState(response.data);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log("home log in error!");
+    //       console.log(error);
+    //     });
+    // }, 3000);
   };
 
   useEffect(() => {
