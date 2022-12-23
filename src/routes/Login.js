@@ -44,7 +44,10 @@ function Login() {
           id: ID,
           password: password,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: { "Access-Controll-Allow-Origin": "http://localhost:8080" },
+        }
       )
       .then((response) => {
         if (response.data.status === 500) {
@@ -63,23 +66,11 @@ function Login() {
       });
 
     // setTimeout(async () => {
-    //   const url = IP + "/account/homeLogin";
+    //   const url = IP + "/account/getCookie";
     //   const res = await axios
-    //     .get(url, {
-    //       id: ID,
-    //       password: password,
-    //     })
+    //     .get(url)
     //     .then((response) => {
-    //       if (response.data.status === 500) {
-    //         setIsWrong(true);
-    //         changeLoginState(response.data);
-    //       } else {
-    //         console.log("home log in");
-    //         console.log(response);
-    //         // setIsWrong(false);
-    //         // navigate(`/${edu}`);
-    //         // changeLoginState(response.data);
-    //       }
+    //       console.log(response);
     //     })
     //     .catch((error) => {
     //       console.log("home log in error!");
