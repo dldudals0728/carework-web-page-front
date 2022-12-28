@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import styles from "./DetailCategory.module.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import EducationContext from "../components/EducationContext";
 import { IP_ADDRESS } from "../temp/IPAddress";
@@ -42,6 +42,8 @@ function DetailCategory() {
   const [isLogin, setIsLogin] = useState(false);
   const [userRole, setUserRole] = useState("");
 
+  const hasHistory = useRef(false);
+
   const getLoginSession = async () => {
     const url = IP + "/account/getUserSession";
     const res = await axios
@@ -73,6 +75,7 @@ function DetailCategory() {
   };
 
   const getBoardList = async () => {
+    console.log("get board list");
     let res;
     if (menu === "전체") {
       res = await axios.get(
@@ -109,6 +112,7 @@ function DetailCategory() {
   };
 
   const changeBoardPage = async () => {
+    console.log("change board page");
     let res;
     let url;
     if (menu === "전체") {
@@ -121,7 +125,7 @@ function DetailCategory() {
     res = await axios.get(url);
 
     if (res.data.status === 200) {
-      const newBoardList = res.data.boardList.content;
+      const newBoardList = [...res.data.boardList.content];
       newBoardList.forEach(
         (value) =>
           (value.publishedDate = `${new Date(
@@ -153,10 +157,17 @@ function DetailCategory() {
 
   useEffect(() => {
     changeBoardPage();
+    if (hasHistory.current) {
+      setCurrentBoardPage(location.state.currentBoardPage);
+      hasHistory.current = false;
+    }
   }, [currentBoardPage]);
 
   useEffect(() => {
     getBoardList();
+    if (location.state && location.state.currentBoardPage) {
+      hasHistory.current = true;
+    }
   }, [menu]);
 
   useEffect(() => {
@@ -164,7 +175,6 @@ function DetailCategory() {
     location.state && location.state.section
       ? setMenu(location.state.section)
       : setMenu("전체");
-    getBoardList();
   }, [params]);
 
   useEffect(() => {
