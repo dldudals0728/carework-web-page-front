@@ -8,7 +8,6 @@ import styles from "./AccountType.module.css";
 function AccountType() {
   const params = useParams();
   const edu = params.education;
-  const { pageState, setPageState } = useContext(EducationContext);
 
   const gettingReady = (e) => {
     e.preventDefault();
@@ -16,12 +15,7 @@ function AccountType() {
   };
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div className={styles.accountType__container}>
         <div>회원가입</div>
         <div className={styles.accountType__btn__container}>

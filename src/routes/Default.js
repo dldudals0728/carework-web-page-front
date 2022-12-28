@@ -4,17 +4,11 @@ import EducationContext from "../components/EducationContext";
 import styles from "./Default.module.css";
 
 function Default() {
-  const { pageState, setPageState } = useContext(EducationContext);
-  const changeCurrentPage = (pageName) => {
-    const prevPageState = { ...pageState };
-    prevPageState.page = pageName;
-    setPageState(prevPageState);
-  };
   return (
     <div className={styles.default__container}>
       <div className={styles.default__title}>교육원 선택</div>
       <div className={styles.default__grid}>
-        <Link to={`/nynoa`} onClick={() => changeCurrentPage("nynoa")}>
+        <Link to={`/nynoa`}>
           <div className={styles.default__btn}>
             <img
               src={`${process.env.PUBLIC_URL}/nynoa.jpg`}

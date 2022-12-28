@@ -9,15 +9,9 @@ function DatabaseAccess() {
   const params = useParams();
   const location = useLocation();
   const IP = IP_ADDRESS;
-  const { pageState, setPageState } = useContext(EducationContext);
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div>
         <ul>
           <li>관리자 권한 부여</li>

@@ -12,7 +12,6 @@ function Account() {
   const params = useParams();
   const edu = params.education;
   const navigate = useNavigate();
-  const { pageState, setPageState } = useContext(EducationContext);
   const IP = IP_ADDRESS;
   const [isSend, setIsSend] = useState(false);
   const [name, setName] = useState("");
@@ -60,7 +59,7 @@ function Account() {
       setConfirmedId(id);
       return;
     }
-    const res = await axios.get(IP + `/account/idcheck?id=${id}`);
+    const res = await axios.get(IP + `/account/idCheck?id=${id}`);
     if (res.data.status === 200) {
       setIsDuplicated(false);
       setConfirmedId(id);
@@ -161,12 +160,7 @@ function Account() {
   };
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div className={styles.account__container}>
         <span>회원가입</span>
         <div className={styles.account__form}>

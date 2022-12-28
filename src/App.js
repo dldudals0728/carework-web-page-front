@@ -11,48 +11,42 @@ import { useState } from "react";
 import Board from "./routes/Board";
 import BoardContent from "./routes/BoardContent";
 import DatabaseAccess from "./routes/DatabaseAccess";
-function App() {
-  const [pageState, setPageState] = useState({
-    page: undefined,
-    isLogin: false,
-    userName: "",
-    classNumber: "",
-    classTime: "",
-    role: "",
-  });
-  return (
-    <EducationContext.Provider value={{ pageState, setPageState }}>
-      <Router basename={process.env.PUBLIC_URL}>
-        <Routes>
-          <Route path="/" index element={<Default />} />
-          <Route path="/:education" element={<Home />} />
-          <Route path="/:education/login" element={<Login />} />
-          <Route path="/:education/account" element={<AccountType />} />
-          <Route path="/:education/account/student" element={<Account />} />
-          <Route
-            path="/:education/category/:category"
-            element={<DetailCategory />}
-          />
-          <Route
-            path="/:education/category/:category/:mode"
-            element={<Board />}
-          />
-          <Route
-            path="/:education/category/:category/:mode/:boardIdx"
-            element={<Board />}
-          />
-          <Route
-            path="/:education/category/:category/detail/:board_idx"
-            element={<BoardContent />}
-          />
+import axios from "axios";
 
-          <Route
-            path="/:education/database/:accessor"
-            element={<DatabaseAccess />}
-          />
-        </Routes>
-      </Router>
-    </EducationContext.Provider>
+axios.defaults.withCredentials = true;
+
+function App() {
+  return (
+    <Router basename={process.env.PUBLIC_URL}>
+      <Routes>
+        <Route path="/" index element={<Default />} />
+        <Route path="/:education" element={<Home />} />
+        <Route path="/:education/login" element={<Login />} />
+        <Route path="/:education/account" element={<AccountType />} />
+        <Route path="/:education/account/student" element={<Account />} />
+        <Route
+          path="/:education/category/:category"
+          element={<DetailCategory />}
+        />
+        <Route
+          path="/:education/category/:category/:mode"
+          element={<Board />}
+        />
+        <Route
+          path="/:education/category/:category/:mode/:boardIdx"
+          element={<Board />}
+        />
+        <Route
+          path="/:education/category/:category/detail/:board_idx"
+          element={<BoardContent />}
+        />
+
+        <Route
+          path="/:education/database/:accessor"
+          element={<DatabaseAccess />}
+        />
+      </Routes>
+    </Router>
   );
 }
 

@@ -13,30 +13,13 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isWrong, setIsWrong] = useState(false);
   const IP = IP_ADDRESS;
-  const { pageState, setPageState } = useContext(EducationContext);
-  const changeLoginState = (loginState) => {
-    const prevPageState = { ...pageState };
-    prevPageState.isLogin = loginState.status === 200 ? true : false;
-    prevPageState.userName = loginState.userName;
-    prevPageState.role = loginState.role;
-    if (loginState.role === "USER") {
-      prevPageState.classNumber = loginState.classNumber;
-      prevPageState.classTime = loginState.classTime;
-    } else {
-      prevPageState.classNumber = "";
-      prevPageState.classTime = "";
-    }
-    setPageState(prevPageState);
-  };
   /**
    * 1. JSON.stringify 지워보기.
    */
   const login = async (e) => {
     // e.preventDefault();
     e.preventDefault();
-    // const url = IP + "/account/login";
-    // const url = IP + "/account/sessionLogin";
-    const url = IP + "/account/cookieLogin";
+    const url = IP + "/account/login";
     const res = await axios
       .post(
         url,
@@ -44,39 +27,26 @@ function Login() {
           id: ID,
           password: password,
         },
+        // config 설정이 없어도 쿠키가 잘 저장되는거 같은데 ?
         {
           withCredentials: true,
-          headers: { "Access-Controll-Allow-Origin": "http://localhost:8080" },
+          headers: {
+            "Access-Control-Allow-Origin": "http://localhost:8080",
+          },
         }
       )
       .then((response) => {
         if (response.data.status === 500) {
           setIsWrong(true);
-          changeLoginState(response.data);
-        } else {
+        } else if (response.data.status === 200) {
           console.log(response);
-          // setIsWrong(false);
-          // navigate(`/${edu}`);
-          // changeLoginState(response.data);
+          setIsWrong(false);
+          navigate(`/${edu}`);
         }
       })
       .catch((error) => {
         setIsWrong(true);
-        changeLoginState("", false);
       });
-
-    // setTimeout(async () => {
-    //   const url = IP + "/account/getCookie";
-    //   const res = await axios
-    //     .get(url)
-    //     .then((response) => {
-    //       console.log(response);
-    //     })
-    //     .catch((error) => {
-    //       console.log("home log in error!");
-    //       console.log(error);
-    //     });
-    // }, 3000);
   };
 
   useEffect(() => {

@@ -22,7 +22,6 @@ function Board(props) {
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { pageState, setPageState } = useContext(EducationContext);
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -30,12 +29,31 @@ function Board(props) {
   const [menu, setMenu] = useState("");
   const [text, setText] = useState("본문을 선택하면 수정할 수 있습니다.");
 
+  const [currentUser, setCurrentUser] = useState("");
+
   const [mode, setMode] = useState("");
 
   const [board, setBoard] = useState({});
 
   const [imgFile, setImgFile] = useState([]);
   const [imgBase64, setImgBase64] = useState([]);
+
+  const getLoginSession = async () => {
+    const url = IP + "/account/getUserSession";
+    const res = await axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          setCurrentUser(response.data.login.name);
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.log("header get session error!");
+        console.log(error);
+      });
+  };
 
   const uploadImgFile = async (boardIdx) => {
     if (imgFile.length === 0) {
@@ -113,7 +131,7 @@ function Board(props) {
         section: menu === "없음" ? "default" : menu,
         title,
         text,
-        writer: pageState.userName,
+        writer: currentUser,
         permission: "ANONYMOUS",
       })
       .then((response) => {
@@ -128,28 +146,26 @@ function Board(props) {
   };
 
   const writeBoard = async () => {
-    const res = await axios.post(IP + "/board/addBoard", {
-      category,
-      section: menu === "없음" ? "default" : menu,
-      title,
-      text,
-      writer: pageState.userName,
-      permission: "ANONYMOUS",
-    });
-    // .then((response) => {
-    //   if (response.data.status === 500) {
-    //     console.log("something is wrong!");
-    //   } else {
-    //     console.log("board가 정상적으로 작성되었습니다.");
-    //     navigate(`/${params.education}/category/${params.category}`);
-    //   }
-    // })
-    // .catch((error) => {});
+    const res = await axios
+      .post(IP + "/board/addBoard", {
+        category,
+        section: menu === "없음" ? "default" : menu,
+        title,
+        text,
+        writer: currentUser,
+        permission: "ANONYMOUS",
+      })
+      .then((response) => {
+        if (response.data.status === 500) {
+          console.log("something is wrong!");
+        } else {
+          console.log("board가 정상적으로 작성되었습니다.");
+          navigate(`/${params.education}/category/${params.category}`);
+        }
+      })
+      .catch((error) => {});
     console.log(res.data.board.id);
     uploadImgFile(JSON.stringify(res.data.board.id));
-    if (res) {
-      navigate(`/${params.education}/category/${params.category}`);
-    }
     alert("게시글이 등록되었습니다.");
   };
 
@@ -177,6 +193,7 @@ function Board(props) {
   }, [mode]);
 
   useEffect(() => {
+    getLoginSession();
     setCategory(params.category);
     setMenuList(categoryMenu[params.category]);
     setMode(params.mode);
@@ -197,12 +214,7 @@ function Board(props) {
 
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div className="board__board">
         <div className="board__header">
           <input

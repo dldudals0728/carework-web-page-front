@@ -30,7 +30,6 @@ function DetailCategory() {
   const params = useParams();
   const location = useLocation();
   const IP = IP_ADDRESS;
-  const { pageState, setPageState } = useContext(EducationContext);
 
   const [category, setCategory] = useState("");
   const [menu, setMenu] = useState("전체");
@@ -39,6 +38,30 @@ function DetailCategory() {
   const [boardPage, setBoardPage] = useState({});
   const [boardPageList, setBoardPageList] = useState([]);
   const [currentBoardPage, setCurrentBoardPage] = useState(0);
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [userRole, setUserRole] = useState("");
+
+  const getLoginSession = async () => {
+    const url = IP + "/account/getUserSession";
+    const res = await axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          console.log(response.data);
+          setUserRole(response.data.login.role);
+          setIsLogin(true);
+        } else {
+          setUserRole("");
+          setIsLogin(false);
+        }
+      })
+      .catch((error) => {
+        console.log("header get session error!");
+        console.log(error);
+      });
+  };
 
   const showBoard = (event, idx) => {
     event.preventDefault();
@@ -138,17 +161,19 @@ function DetailCategory() {
 
   useEffect(() => {
     setCategory(params.category);
-    location.state ? setMenu(location.state.section) : setMenu("전체");
+    location.state && location.state.section
+      ? setMenu(location.state.section)
+      : setMenu("전체");
     getBoardList();
   }, [params]);
+
+  useEffect(() => {
+    getLoginSession();
+  }, []);
+
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div></div>
       <div className={styles.detail__container}>
         <div className={styles.detail__content__list}>
@@ -168,11 +193,11 @@ function DetailCategory() {
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Link
             to={
-              pageState.isLogin
+              isLogin
                 ? `/${params.education}/category/${category}/insert`
                 : `/${params.education}/login`
             }
-            state={pageState.isLogin ? { menu, mode: "insert" } : null}
+            state={isLogin ? { menu, mode: "insert" } : null}
           >
             <button type="button">글쓰기</button>
           </Link>
@@ -193,6 +218,7 @@ function DetailCategory() {
                   // onClick={(e) => showBoard(e, idx)}
                   // onClick={gettingReady}
                   key={idx}
+                  state={{ currentBoardPage }}
                 >
                   <li className={styles.detail__content} key={idx}>
                     <div>{currentBoardPage * 10 + (idx + 1)}</div>

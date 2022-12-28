@@ -8,17 +8,6 @@ import styles from "./Home.module.css";
 
 function Home() {
   const params = useParams();
-  const { pageState, setPageState } = useContext(EducationContext);
-  const changeCurrentPage = (pageName) => {
-    const prevPageState = { ...pageState };
-    prevPageState.page = pageName;
-    setPageState(prevPageState);
-  };
-  useEffect(() => {
-    if (pageState.page === undefined) {
-      changeCurrentPage(params.education);
-    }
-  }, []);
 
   if (params.education !== "nynoa") {
     return <div></div>;
@@ -26,12 +15,7 @@ function Home() {
   return (
     <div>
       <header className={styles.header__wrap}>
-        <Header
-          education={params.education}
-          isLogin={pageState.isLogin}
-          username={pageState.userName}
-          role={pageState.role}
-        />
+        <Header />
       </header>
 
       <section className={styles.home__main}>

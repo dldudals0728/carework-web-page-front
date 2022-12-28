@@ -1,35 +1,84 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { ROLE } from "../constant/Role";
+import { IP_ADDRESS } from "../temp/IPAddress";
 import Dropdown from "./Dropdown";
 import EducationContext from "./EducationContext";
 import styles from "./Header.module.css";
 
 function Header(props) {
-  const edu = props.education;
+  const params = useParams();
+  const edu = params.education;
+  const IP = IP_ADDRESS;
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
-  const { pageState, setPageState } = useContext(EducationContext);
-  const logout = () => {
-    const prevPageState = { ...pageState };
-    prevPageState.userName = "";
-    prevPageState.isLogin = false;
-    prevPageState.userName = "";
-    prevPageState.classNumber = "";
-    prevPageState.classTime = "";
-    prevPageState.role = "";
-    setPageState(prevPageState);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userLogin, setUserLogin] = useState({
+    address: "",
+    classNumber: "",
+    classTime: "",
+    id: 0,
+    name: "",
+    password: "",
+    phone: "",
+    role: "",
+    rrn: "",
+    userId: "",
+  });
+
+  const logout = async () => {
+    setIsLogin(false);
+    setUserLogin({
+      address: "",
+      classNumber: "",
+      classTime: "",
+      id: 0,
+      name: "",
+      password: "",
+      phone: "",
+      role: "",
+      rrn: "",
+      userId: "",
+    });
+    const url = IP + "/account/logout";
+    await axios.post(url);
   };
+
+  const getLoginSession = async () => {
+    const url = IP + "/account/getUserSession";
+    const res = await axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          console.log(response.data);
+          setUserLogin(response.data.login);
+          setIsLogin(true);
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.log("header get session error!");
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getLoginSession();
+    console.log(params);
+  }, []);
   return (
     <div className={styles.header__container}>
       <div className={styles.account}>
         <ul className={`${styles.menu} ${styles.account__menu}`}>
-          {props.role === "USER" && (
-            <li>{`${pageState.classNumber}기 ${pageState.classTime}`}</li>
+          {userLogin.role === "USER" && (
+            <li>{`${userLogin.classNumber}기 ${userLogin.classTime}`}</li>
           )}
-          {ROLE[props.role] >= 5 && <li style={{ color: "red" }}>관리자</li>}
-          {props.isLogin ? (
+          {ROLE[userLogin.role] >= 5 && (
+            <li style={{ color: "red" }}>관리자</li>
+          )}
+          {isLogin ? (
             <li style={{ fontWeight: "bold" }}>
-              환영합니다. {props.username}님!
+              환영합니다. {userLogin.name}님!
             </li>
           ) : null}
           <li>
@@ -43,7 +92,7 @@ function Header(props) {
           </li>
 
           <li>
-            {props.isLogin ? (
+            {isLogin ? (
               <Link
                 to={{
                   pathname: `/${edu}`,
@@ -80,9 +129,9 @@ function Header(props) {
         <nav>
           <ul className={`${styles.menu} ${styles.main__menu}`}>
             <li>
-              {ROLE[props.role] >= 5 ? (
+              {ROLE[userLogin.role] >= 5 ? (
                 <Link
-                  to={`/${edu}/database/${props.role}`}
+                  to={`/${edu}/database/${userLogin.role}`}
                   style={{ color: "red" }}
                 >
                   DB 관리자 접속

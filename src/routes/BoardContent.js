@@ -13,12 +13,35 @@ function BoardContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const IP = IP_ADDRESS;
-  const { pageState, setPageState } = useContext(EducationContext);
 
   const [board, setBoard] = useState({});
   const [publishedDate, setPublishedDate] = useState(new Date());
 
   const [imgList, setImgList] = useState([]);
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [userRole, setUserRole] = useState("");
+
+  const getLoginSession = async () => {
+    const url = IP + "/account/getUserSession";
+    const res = await axios
+      .get(url)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          console.log(response.data);
+          setUserRole(response.data.login.role);
+          setIsLogin(true);
+        } else {
+          setUserRole("");
+          setIsLogin(false);
+        }
+      })
+      .catch((error) => {
+        console.log("header get session error!");
+        console.log(error);
+      });
+  };
 
   const getBoardImage = async () => {
     const res = await axios.get(
@@ -65,17 +88,13 @@ function BoardContent() {
   }, [board]);
 
   useEffect(() => {
+    getLoginSession();
     getBoardContent();
   }, []);
 
   return (
     <div>
-      <Header
-        education={params.education}
-        isLogin={pageState.isLogin}
-        username={pageState.userName}
-        role={pageState.role}
-      />
+      <Header />
       <div className={styles.board_content__container}>
         <h1 className={styles.board_content__title}>{board.title}</h1>
         <div className={styles.board_content__info}>
@@ -103,7 +122,7 @@ function BoardContent() {
           })}
         </div>
         <div className="board__btn__container">
-          {pageState.isLogin && ROLE[pageState.role] >= 5 && (
+          {isLogin && ROLE[userRole] >= 5 && (
             <div>
               <button
                 style={{
@@ -119,7 +138,7 @@ function BoardContent() {
               <Link
                 to={`/${params.education}/category/${params.category}/update/${params.board_idx}`}
                 state={
-                  pageState.isLogin
+                  isLogin
                     ? {
                         boardIdx: params.board_idx,
                         menu: board.section,
@@ -135,7 +154,11 @@ function BoardContent() {
           <button
             type="button"
             onClick={() => {
-              navigate(-1);
+              navigate(`/${params.education}/category/${params.category}`, {
+                state: {
+                  currentBoardPage: location.state.currentBoardPage,
+                },
+              });
             }}
           >
             돌아가기
